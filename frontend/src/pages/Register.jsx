@@ -1,7 +1,8 @@
-import api from "../api"
+import Form from "../components/Form"
 
-return <div>
-    Register
-</div>
+/* Connects to backend url*/
+function Register() {
+    return <Form route="/api/user/register/" method="register" />
+}
 
 export default Register
