@@ -10,3 +10,22 @@ To install the backend Django modules, run the following command:
 ```
 pip install -r requirements.txt
 ```
+
+
+## Run the Application and Server
+
+To run the backend server, run the following command:
+```
+cd backend
+python manage.py runserver
+```
+
+To run the frontend React page, run the following command:
+```
+cd frontend
+npm run dev
+```
+
+To see login, enter the credentials below on the login page
+username: cam_test2
+password: 123123
