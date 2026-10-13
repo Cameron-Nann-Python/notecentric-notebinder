@@ -14,11 +14,14 @@ function Form({route, method}) {
 
     /* Use an asynchronous function to handle form submission */
     const submit = async (e) => {
+        e.preventDefault();
         try {
-            const response = await api.post(route, (username, password))
+            const response = await api.post(route, {username, password})
             if (method == "login") {
                 localStorage.setItem(ACCESS_TOKEN, response.data.access);
                 localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
+                /* If login is successful, navigate to home */
+                navigate("/")
             }
             else {
                 navigate("/login")
@@ -51,7 +54,6 @@ function Form({route, method}) {
             {name}
         </button>
     </form>
-
 }
 
 export default Form
