@@ -3,14 +3,26 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
+import ProtectedPage from "./components/ProtectedPage"
+
+function Logout() {
+  localStorage.clear()
+  return <Navigate to="/login" />
+}
+
+function RegisterAndLogout() {
+  localStorage.clear()
+  return <Register />
+}
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<ProtectedPage><Home /></ProtectedPage>} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" elemnent={<Register />} />
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/register" elemnent={<RegisterAndLogout />} />
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
