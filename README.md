@@ -11,6 +11,10 @@ To install the backend Django modules, run the following command:
 pip install -r requirements.txt
 ```
 
+To install axios for automatic url handling and to manage jwt tokens, run the following command:
+```
+npm install axios react-router-dom jwt-decode
+```
 
 ## Run the Application and Server
 
