@@ -33,3 +33,12 @@ npm run dev
 To see login, enter the credentials below on the login page
 username: cam_test2
 password: 123123
+
+
+## How to Run Tests
+
+For the backend pytest tests run the following commands:
+```
+cd backend
+pytest
+```
