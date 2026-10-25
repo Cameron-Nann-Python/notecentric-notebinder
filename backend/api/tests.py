@@ -5,6 +5,7 @@ import pytest
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
+# Use this fixture to test client connection
 @pytest.fixture
 def client():
     return APIClient()
@@ -17,7 +18,7 @@ def registered_user():
         password="test_password"
     )
 
-@pytest.mark.django_db # access database
+@pytest.mark.django_db # access fresh database
 def test_usr_01(client):
     """
     Tests if user can successfully register their account.
