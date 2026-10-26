@@ -1,8 +1,11 @@
 import api from "../api"
 import {useState, useEffect} from "react";
 import Note from "../components/Note"
+import { useNavigate } from "react-router-dom"
 
 function Home() {
+    const navigate = useNavigate()
+
     const [notes, setNotes] = useState([]);
     const [content, setContent] = useState();
     const [title, setTitle] = useState("");
@@ -71,6 +74,11 @@ function Home() {
 
             <input type="submit" value="Submit"/>
         </form>
+        <div>
+            <button type="button" onClick={() => navigate("/logout")}>
+                Logout
+            </button>
+        </div>
     </div>
 }
 
