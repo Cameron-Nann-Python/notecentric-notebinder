@@ -11,6 +11,10 @@ To install the backend Django modules, run the following command:
 pip install -r requirements.txt
 ```
 
+To install axios for automatic url handling and to manage jwt tokens, run the following command:
+```
+npm install axios react-router-dom jwt-decode
+```
 
 ## Run the Application and Server
 
@@ -29,3 +33,12 @@ npm run dev
 To see login, enter the credentials below on the login page
 username: cam_test2
 password: 123123
+
+
+## How to Run Tests
+
+For the backend pytest tests run the following commands:
+```
+cd backend
+pytest
+```
