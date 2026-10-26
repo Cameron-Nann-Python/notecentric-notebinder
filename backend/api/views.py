@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from .serializers import UserSerializer, NoteSerializer, ClassSerializer
-from .models import Note, Class
+from .serializers import UserSerializer, NoteSerializer, ClassSerializer, ModuleSerializer
+from .models import Note, Class, Module
 
 # Create your views here.
 class NoteListCreate(generics.ListCreateAPIView):
@@ -49,4 +49,12 @@ class ClassListCreate(generics.ListCreateAPIView):
             serializer.save(owner=self.request.user)
         else:
             print(serializer.errors)
-            
+
+class ModuleListCreate(generics.ListCreateAPIView):
+    serializer_class = ModuleSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        # class_folder__owner from docs.djangoproject: Making Queries, Lookups that span relationships
+        return Module.objects.filter(class_folder__owner=user)
