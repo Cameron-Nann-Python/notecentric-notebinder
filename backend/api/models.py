@@ -21,6 +21,13 @@ class Module(models.Model):
     )
 
 class Note(models.Model):
+    module = models.ForeignKey(
+        Module,
+        on_delete=models.CASCADE,
+        # for backwards compatibility, unassigned old notes without a module
+        # delete this later -> so notes can't be made without a module
+        null=True,
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE, 
