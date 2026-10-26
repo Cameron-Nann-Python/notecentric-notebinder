@@ -118,7 +118,11 @@ function Home() {
       <div>
         <h2>Classes</h2>
         {classes.map((classFolder) => (
-          <ClassFolder classFolder={classFolder} key={classFolder.id} />
+          <ClassFolder
+            classFolder={classFolder}
+            onSelect={setSelectedClass}
+            key={classFolder.id}
+          />
         ))}
       </div>
       <h2>Create a Class</h2>
