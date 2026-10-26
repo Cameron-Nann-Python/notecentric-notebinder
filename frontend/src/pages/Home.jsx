@@ -16,6 +16,7 @@ function Home() {
   const [modules, setModules] = useState([]);
   const [moduleName, setModuleName] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
+  const [selectedModule, setSelectedModule] = useState("");
 
   useEffect(() => {
     getNotes();
@@ -72,7 +73,7 @@ function Home() {
   const createNote = (e) => {
     e.preventDefault();
     api
-      .post("/api/notes/", { content, title })
+      .post("/api/notes/", { content, title, module: Number(selectedModule) })
       .then((res) => {
         if (res.status === 201) alert("Note created!");
         else alert("Failed to create note.");
@@ -143,7 +144,11 @@ function Home() {
       <div>
         <h2>Modules</h2>
         {modules.map((module) => (
-          <ModuleFolder module={module} key={module.id} />
+          <ModuleFolder
+            module={module}
+            onSelect={setSelectedModule}
+            key={module.id}
+          />
         ))}
       </div>
       <h2>Create a Module</h2>
