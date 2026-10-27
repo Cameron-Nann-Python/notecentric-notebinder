@@ -4,6 +4,8 @@ import Note from "../components/Note";
 import { useNavigate } from "react-router-dom";
 import ClassFolder from "../components/ClassFolder";
 import ModuleFolder from "../components/ModuleFolder";
+import "../styles/Home.css"
+import "../styles/Banner.css"
 
 function Home() {
   const navigate = useNavigate();
@@ -115,7 +117,16 @@ function Home() {
 
   return (
     <div>
-      Home
+      <header className="banner" >
+            <h1>NoteBinder</h1>
+            
+            <div className="header-actions">
+                <span className="page-title">Home</span>
+                <button type="button" className="logout-button"onClick={() => navigate("/logout")}>
+                    Logout
+                </button>
+            </div>
+        </header>
       <div>
         <h2>Classes</h2>
         {classes.map((classFolder) => (
@@ -139,7 +150,7 @@ function Home() {
           onChange={(e) => setClassName(e.target.value)}
         />
         <br />
-        <input type="submit" value="Submit" />
+        <input className="submit-button" type="submit" value="Submit" />
       </form>
       <div>
         <h2>Modules</h2>
@@ -164,13 +175,15 @@ function Home() {
           onChange={(e) => setModuleName(e.target.value)}
         />
         <br />
-        <input type="submit" value="Submit" />
+        <input className="submit-button" type="submit" value="Submit" />
       </form>
       <div>
         <h2>Notes</h2>
+        <div className="notes-grid">
         {notes.map((note) => (
           <Note note={note} onDelete={deleteNote} key={note.id} />
         ))}
+        </div>
       </div>
       <h2>Create a Note</h2>
       <form onSubmit={createNote}>
@@ -199,13 +212,8 @@ function Home() {
         />
         <br />
 
-        <input type="submit" value="Submit" />
-      </form>
-      <div>
-        <button type="button" onClick={() => navigate("/logout")}>
-          Logout
-        </button>
-      </div>
+            <input className="submit-button" type="submit" value="Submit"/>
+        </form>
     </div>
   );
 }
