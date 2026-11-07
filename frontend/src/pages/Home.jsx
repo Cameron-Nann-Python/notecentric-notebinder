@@ -118,25 +118,49 @@ function Home() {
   return (
     <div>
       <header className="banner" >
-            <h1>NoteBinder</h1>
-            
-            <div className="header-actions">
-                <span className="page-title">Home</span>
-                <button type="button" className="logout-button"onClick={() => navigate("/logout")}>
-                    Logout
-                </button>
-            </div>
-        </header>
-      <div>
-        <h2>Classes</h2>
-        {classes.map((classFolder) => (
-          <ClassFolder
-            classFolder={classFolder}
-            onSelect={setSelectedClass}
-            key={classFolder.id}
-          />
-        ))}
-      </div>
+        <h1>NoteBinder</h1>
+        <div className="header-actions">
+          <span className="page-title">Home</span>
+          <button type="button" className="logout-button"onClick={() => navigate("/logout")}>
+            Logout
+          </button>
+        </div>
+      </header>
+      {
+        classes
+          .map(classFolder => (
+            <ClassFolder
+              classFolder={classFolder}
+              onSelect={setSelectedClass}
+              key={classFolder.id}
+            >
+            {
+              modules
+                .filter(module => module.class_folder === classFolder.id)
+                .map(module => (
+                  <ModuleFolder
+                    module={module}
+                    onSelect={setSelectedModule}
+                    key={module.id}
+                  >
+                  {
+                    notes
+                      .filter(note => note.module === module.id)
+                      .map(note => (
+                        <Note
+                          key={note.id}
+                          note={note}
+                          onDelete={deleteNote}
+                        />
+                      ))
+                  }
+                  </ModuleFolder>
+                ))
+            }
+            </ClassFolder>
+        ))
+      }
+
       <h2>Create a Class</h2>
       <form onSubmit={createClass}>
         <label htmlFor="className">Class name:</label>
@@ -152,41 +176,27 @@ function Home() {
         <br />
         <input className="submit-button" type="submit" value="Submit" />
       </form>
-      <div>
-        <h2>Modules</h2>
-        {modules.map((module) => (
-          <ModuleFolder
-            module={module}
-            onSelect={setSelectedModule}
-            key={module.id}
-          />
-        ))}
-      </div>
+
       <h2>Create a Module</h2>
       <form onSubmit={createModule}>
+        <p>Class: {classes.find(c => c.id === selectedClass)?.name || "None"}</p>
         <label htmlFor="moduleName">Module name:</label>
         <br />
         <input
-          type="text"
-          id="moduleName"
-          name="moduleName"
-          required
-          value={moduleName}
-          onChange={(e) => setModuleName(e.target.value)}
+        type="text"
+        id="moduleName"
+        name="moduleName"
+        required
+        value={moduleName}
+        onChange={(e) => setModuleName(e.target.value)}
         />
         <br />
         <input className="submit-button" type="submit" value="Submit" />
       </form>
-      <div>
-        <h2>Notes</h2>
-        <div className="notes-grid">
-        {notes.map((note) => (
-          <Note note={note} onDelete={deleteNote} key={note.id} />
-        ))}
-        </div>
-      </div>
+
       <h2>Create a Note</h2>
       <form onSubmit={createNote}>
+        <p><b>Module: {modules.find(m => m.id === selectedModule)?.name || "None"}</b></p>
         <label htmlFor="title">Title:</label>
         <br />
 
@@ -211,11 +221,10 @@ function Home() {
           onChange={(e) => setContent(e.target.value)}
         />
         <br />
-
-            <input className="submit-button" type="submit" value="Submit"/>
-        </form>
+        <input className="submit-button" type="submit" value="Submit"/>
+      </form>
     </div>
-  );
+  )
 }
 
 export default Home;
