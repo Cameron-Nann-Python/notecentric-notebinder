@@ -20,6 +20,11 @@ function Home() {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedModule, setSelectedModule] = useState("");
 
+  // Set visibiilty for creation forms for classes, modules and notes
+  const [showClassForm, setShowClassForm] = useState(false);
+  const [showModuleForm, setShowModuleForm] = useState(false);
+  const [showNoteForm, setShowNoteForm] = useState(false);
+
   useEffect(() => {
     getNotes();
     getClasses();
@@ -126,103 +131,128 @@ function Home() {
           </button>
         </div>
       </header>
-      {
-        classes
-          .map(classFolder => (
-            <ClassFolder
-              classFolder={classFolder}
-              onSelect={setSelectedClass}
-              key={classFolder.id}
-            >
-            {
-              modules
-                .filter(module => module.class_folder === classFolder.id)
-                .map(module => (
-                  <ModuleFolder
-                    module={module}
-                    onSelect={setSelectedModule}
-                    key={module.id}
-                  >
-                  {
-                    notes
-                      .filter(note => note.module === module.id)
-                      .map(note => (
-                        <Note
-                          key={note.id}
-                          note={note}
-                          onDelete={deleteNote}
-                        />
-                      ))
-                  }
-                  </ModuleFolder>
-                ))
-            }
-            </ClassFolder>
-        ))
-      }
 
-      <h2>Create a Class</h2>
-      <form onSubmit={createClass}>
-        <label htmlFor="className">Class name:</label>
-        <br />
-        <input
-          type="text"
-          id="className"
-          name="className"
-          required
-          value={className}
-          onChange={(e) => setClassName(e.target.value)}
-        />
-        <br />
-        <input className="submit-button" type="submit" value="Submit" />
-      </form>
+      <div>
+        <h2>Classes</h2>
+        <button type="button" onClick={() => setShowClassForm(true)}>
+          + Create a Class
+        </button>
+        {
+          showClassForm && (
+            <form onSubmit={createClass}>
+              <label htmlFor="className">Class name:</label>
+              <br />
+              <input
+                type="text"
+                id="className"
+                name="className"
+                required
+                value={className}
+                onChange={(e) => setClassName(e.target.value)}
+              />
+              <br />
+              <input className="submit-button" type="submit" value="Submit" />
+              <input className="cancel-button" type="button" onClick={() => {setShowClassForm(false); setClassName("");}} value="Cancel"/>
+            </form>
+          )
+        }
+        {
+          classes
+            .map(classFolder => (
+              <ClassFolder
+                classFolder={classFolder}
+                onSelect={setSelectedClass}
+                key={classFolder.id}
+              >
+              <div>
+                <button type="button" onClick={() => {setSelectedClass(classFolder); setShowModuleForm(true);}}>
+                  + Create a Module
+                </button>
+              </div>
+              {
+                showModuleForm && (
+                  <form onSubmit={createModule}>
+                    <p>Class: {classes.find(c => c.id === selectedClass)?.name || "None"}</p>
+                    <label htmlFor="moduleName">Module name:</label>
+                    <br />
+                    <input
+                    type="text"
+                    id="moduleName"
+                    name="moduleName"
+                    required
+                    value={moduleName}
+                    onChange={(e) => setModuleName(e.target.value)}
+                    />
+                    <br />
+                    <input className="submit-button" type="submit" value="Submit" />
+                    <input className="cancel-button" type="button" onClick={() => {setShowModuleForm(false); setModuleName("");}} value="Cancel"/>
+                  </form>
+                )
+              }
+              {
+                modules
+                  .filter(module => module.class_folder === classFolder.id)
+                  .map(module => (
+                    <ModuleFolder
+                      module={module}
+                      onSelect={setSelectedModule}
+                      key={module.id}
+                    >
+                    <div>
+                      <button type="button" onClick={() => {setSelectedModule(module); setShowNoteForm(true);}}>
+                        + Create a Note
+                      </button>
+                    </div>
+                    {
+                      showNoteForm && (
+                        <form onSubmit={createNote}>
+                          <p><b>Module: {modules.find(m => m.id === selectedModule)?.name || "None"}</b></p>
+                          <label htmlFor="title">Title:</label>
+                          <br />
 
-      <h2>Create a Module</h2>
-      <form onSubmit={createModule}>
-        <p>Class: {classes.find(c => c.id === selectedClass)?.name || "None"}</p>
-        <label htmlFor="moduleName">Module name:</label>
-        <br />
-        <input
-        type="text"
-        id="moduleName"
-        name="moduleName"
-        required
-        value={moduleName}
-        onChange={(e) => setModuleName(e.target.value)}
-        />
-        <br />
-        <input className="submit-button" type="submit" value="Submit" />
-      </form>
+                          <input
+                            type="text"
+                            id="title"
+                            name="title"
+                            required
+                            onChange={(e) => setTitle(e.target.value)}
+                            value={title}
+                          />
+                          <br />
 
-      <h2>Create a Note</h2>
-      <form onSubmit={createNote}>
-        <p><b>Module: {modules.find(m => m.id === selectedModule)?.name || "None"}</b></p>
-        <label htmlFor="title">Title:</label>
-        <br />
-
-        <input
-          type="text"
-          id="title"
-          name="title"
-          required
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-        />
-        <br />
-
-        <label htmlFor="content">Content:</label>
-        <br />
-
-        <textarea
-          id="content"
-          name="content"
-          required
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
-        <br />
-        <input className="submit-button" type="submit" value="Submit"/>
-      </form>
+                          <label htmlFor="content">Content:</label>
+                          <br />
+                          <textarea
+                            id="content"
+                            name="content"
+                            required
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                          />
+                          <br />
+                          <input className="submit-button" type="submit" value="Submit"/>
+                          <input className="cancel-button" type="button" onClick={() => {setShowNoteForm(false); setModuleName("");}} value="Cancel"/>
+                        </form>
+                      )
+                    }
+                    {
+                      notes
+                        .filter(note => note.module === module.id)
+                        .map(note => (
+                          <Note
+                            key={note.id}
+                            note={note}
+                            onDelete={deleteNote}
+                          />
+                        ))
+                    }
+                    </ModuleFolder>
+                  ))
+              }
+              </ClassFolder>
+          ))
+        }
+      </div>
     </div>
   )
 }
