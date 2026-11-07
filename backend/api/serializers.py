@@ -2,8 +2,24 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from api.models import Class
 from api.models import Module
+from typing import Any
 
 from .models import Note
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        """
+        Returns a network response of access token, response token, is_superuser.
+        Disregard the warning.
+        """
+        # get dictionary of access token and response token
+        data: dict[str, Any] = super().validate(attrs)
+        # add is_superuser field for admin
+        data["is_superuser"] = self.user.is_superuser
+
+        return data
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

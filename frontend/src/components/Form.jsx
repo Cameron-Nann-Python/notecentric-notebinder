@@ -18,11 +18,18 @@ function Form({route, method}) {
         e.preventDefault();
         try {
             const response = await api.post(route, {username, password})
+            console.log(response.data);
             if (method == "login") {
                 localStorage.setItem(ACCESS_TOKEN, response.data.access);
                 localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
-                /* If login is successful, navigate to home */
-                navigate("/")
+                if (response.data.is_superuser === true) {
+                    /* If login successsful for admin, naviget to admin home */
+                    navigate("/admin")
+                }
+                else {
+                    /* If login is successful for user, navigate to user home */
+                    navigate("/")
+                }
             }
             else {
                 navigate("/login")
