@@ -11,7 +11,7 @@ function Home() {
   const navigate = useNavigate();
 
   const [notes, setNotes] = useState([]);
-  const [content, setContent] = useState();
+  const [content, setContent] = useState(""); // Set as string for now
   const [title, setTitle] = useState("");
   const [classes, setClasses] = useState([]);
   const [className, setClassName] = useState("");
@@ -20,7 +20,7 @@ function Home() {
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedModule, setSelectedModule] = useState("");
 
-  // Set visibiilty for creation forms for classes, modules and notes
+  // Set visibiilty for creating forms for classes, modules and notes
   const [showClassForm, setShowClassForm] = useState(false);
   const [showModuleForm, setShowModuleForm] = useState(false);
   const [showNoteForm, setShowNoteForm] = useState(false);
@@ -30,6 +30,28 @@ function Home() {
     getClasses();
     getModules();
   }, []);
+
+  const getClasses = () => {
+    api
+    .get("/api/classes/")
+    .then((res) => res.data)
+    .then((data) => {
+      setClasses(data);
+      console.log(data);
+    })
+    .catch((err) => alert(err));
+  };
+
+  const getModules = () => {
+    api
+    .get("/api/modules/")
+    .then((res) => res.data)
+    .then((data) => {
+      setModules(data);
+      console.log(data);
+    })
+    .catch((err) => alert(err));
+  };
 
   const getNotes = () => {
     api
@@ -42,26 +64,63 @@ function Home() {
       .catch((err) => alert(err));
   };
 
-  const getClasses = () => {
+  const createClass = (e) => {
+    e.preventDefault();
     api
-      .get("/api/classes/")
-      .then((res) => res.data)
-      .then((data) => {
-        setClasses(data);
-        console.log(data);
-      })
-      .catch((err) => alert(err));
+    .post("/api/classes/", { name: className })
+    .then((res) => {
+      if (res.status === 201) {
+        alert("Class created!");
+        setClassName("");
+        setShowClassForm(false);
+      }
+      else alert("Failed to create class.");
+
+      getClasses();
+    })
+    .catch((err) => {alert(err); console.log(err.response?.data);});
   };
 
-  const getModules = () => {
+  const createModule = (e) => {
+    e.preventDefault();
     api
-      .get("/api/modules/")
-      .then((res) => res.data)
-      .then((data) => {
-        setModules(data);
-        console.log(data);
-      })
-      .catch((err) => alert(err));
+    .post("/api/modules/", {
+      name: moduleName,
+      class_folder: selectedClass.id,
+    })
+    .then((res) => {
+      if (res.status === 201) {
+        alert("Module created!");
+        // Reset module form data
+        setModuleName("");
+        setShowModuleForm(false);
+
+        getModules();
+      }
+      else alert("Failed to create module.");
+    })
+    .catch((err) => {alert(err); console.log(err.response?.data);});
+  };
+
+  const createNote = (e) => {
+    e.preventDefault();
+    api
+    .post("/api/notes/", { content, title, module: selectedModule.id })
+    .then((res) => {
+      if (res.status === 201) {
+        alert("Note created!");
+
+        // Reset form data
+        setTitle("");
+        setContent("");
+        setShowNoteForm(false);
+
+        // Update notes after note deletion
+        getNotes();
+      }
+      else alert("Failed to create note.");
+    })
+    .catch((err) => {alert(err); console.log(err.response?.data);});
   };
 
   const deleteNote = (id) => {
@@ -73,49 +132,6 @@ function Home() {
 
         // Update notes after note deletion
         getNotes();
-      })
-      .catch((err) => alert(err));
-  };
-
-  const createNote = (e) => {
-    e.preventDefault();
-    api
-      .post("/api/notes/", { content, title, module: Number(selectedModule) })
-      .then((res) => {
-        if (res.status === 201) alert("Note created!");
-        else alert("Failed to create note.");
-
-        // Update notes after note deletion
-        getNotes();
-      })
-      .catch((err) => alert(err));
-  };
-
-  const createClass = (e) => {
-    e.preventDefault();
-    api
-      .post("/api/classes/", { name: className })
-      .then((res) => {
-        if (res.status === 201) alert("Class created!");
-        else alert("Failed to create class.");
-
-        getClasses();
-      })
-      .catch((err) => alert(err));
-  };
-
-  const createModule = (e) => {
-    e.preventDefault();
-    api
-      .post("/api/modules/", {
-        name: moduleName,
-        class_folder: Number(selectedClass),
-      })
-      .then((res) => {
-        if (res.status === 201) alert("Module created!");
-        else alert("Failed to create module.");
-
-        getModules();
       })
       .catch((err) => alert(err));
   };
@@ -161,7 +177,6 @@ function Home() {
             .map(classFolder => (
               <ClassFolder
                 classFolder={classFolder}
-                onSelect={setSelectedClass}
                 key={classFolder.id}
               >
               <div>
@@ -170,9 +185,9 @@ function Home() {
                 </button>
               </div>
               {
-                showModuleForm && (
+                showModuleForm && selectedClass?.id === classFolder.id && (
                   <form onSubmit={createModule}>
-                    <p>Class: {classes.find(c => c.id === selectedClass)?.name || "None"}</p>
+                    <p>Class: {selectedClass?.name || "None"}</p>
                     <label htmlFor="moduleName">Module name:</label>
                     <br />
                     <input
@@ -195,7 +210,6 @@ function Home() {
                   .map(module => (
                     <ModuleFolder
                       module={module}
-                      onSelect={setSelectedModule}
                       key={module.id}
                     >
                     <div>
@@ -204,9 +218,9 @@ function Home() {
                       </button>
                     </div>
                     {
-                      showNoteForm && (
+                      showNoteForm && selectedModule?.id === module.id && (
                         <form onSubmit={createNote}>
-                          <p><b>Module: {modules.find(m => m.id === selectedModule)?.name || "None"}</b></p>
+                          <p><b>Module: {selectedModule?.name || "None"}</b></p>
                           <label htmlFor="title">Title:</label>
                           <br />
 
@@ -231,7 +245,7 @@ function Home() {
                           />
                           <br />
                           <input className="submit-button" type="submit" value="Submit"/>
-                          <input className="cancel-button" type="button" onClick={() => {setShowNoteForm(false); setModuleName("");}} value="Cancel"/>
+                          <input className="cancel-button" type="button" onClick={() => {setShowNoteForm(false); setTitle(""); setContent("");}} value="Cancel"/>
                         </form>
                       )
                     }

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-function ModuleFolder({ module, onSelect, children }) {
+function ModuleFolder({ module, children }) {
   // Make folder collapsible
   const [open, setOpen] = useState(false);
 
@@ -10,9 +10,6 @@ function ModuleFolder({ module, onSelect, children }) {
       <p className="module-name">{module.name}</p>
       <button type="button" onClick={() => setOpen(!open)}>
         {open ? "▼": "▶"}
-      </button>
-      <button className="select-button" onClick={() => onSelect(module.id)}>
-        Select
       </button>
       {
         open && (

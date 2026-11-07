@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-function ClassFolder({ classFolder, onSelect, children }) {
+function ClassFolder({ classFolder, children }) {
   // Make folder collapsible
   const [open, setOpen] = useState(false);
 
@@ -10,9 +10,6 @@ function ClassFolder({ classFolder, onSelect, children }) {
       <p className="class-name">{classFolder.name}</p>
       <button type="button" onClick={() => setOpen(!open)}>
         {open ? "▼": "▶"}
-      </button>
-      <button type="button" onClick={() => onSelect(classFolder.id)}>
-        Select
       </button>
       {
         open && (
