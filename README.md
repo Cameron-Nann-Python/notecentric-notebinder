@@ -34,6 +34,10 @@ To see login, enter the credentials below on the login page
 username: cam_test2
 password: 123123
 
+Admin credentials
+username: admin
+password: Cervantes!
+
 
 ## How to Run Tests
 
