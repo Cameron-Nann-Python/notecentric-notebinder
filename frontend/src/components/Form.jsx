@@ -18,7 +18,6 @@ function Form({route, method}) {
         e.preventDefault();
         try {
             const response = await api.post(route, {username, password})
-            console.log(response.data);
             if (method == "login") {
                 localStorage.setItem(ACCESS_TOKEN, response.data.access);
                 localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
