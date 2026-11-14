@@ -11,7 +11,7 @@ import "../styles/Home.css";
 import "../styles/Banner.css";
 import "../styles/Admin.css";
 
-function Admin() {
+function AdminPage() {
     const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
@@ -176,4 +176,4 @@ function Admin() {
     );
 }
 
-export default Admin;
+export default AdminPage;
