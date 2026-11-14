@@ -9,6 +9,7 @@ import Note from "../components/Note";
 
 import "../styles/Home.css";
 import "../styles/Banner.css";
+import "..s/styles/Admin.css";
 
 function Admin() {
     const navigate = useNavigate();
