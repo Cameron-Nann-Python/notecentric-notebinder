@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
 from .serializers import UserSerializer, NoteSerializer, ClassSerializer, ModuleSerializer
 from .models import Note, Class, Module
@@ -58,3 +58,44 @@ class ModuleListCreate(generics.ListCreateAPIView):
         user = self.request.user
         # class_folder__owner from docs.djangoproject: Making Queries, Lookups that span relationships
         return Module.objects.filter(class_folder__owner=user)
+
+class AdminUserList(generics.ListAPIView):
+    queryset = User.objects.all().order_by("username")
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+
+class AdminClassList(generics.ListAPIView):
+    serializer_class = ClassSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return Class.objects.filter(
+            owner_id=self.kwargs["user_id"]
+        )
+
+class AdminModuleList(generics.ListAPIView):
+    serializer_class = ModuleSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return Module.objects.filter(
+            class_folder__owner_id=self.kwargs["user_id"]
+        )
+
+
+# Admin: Retrieve selected user's notes
+class AdminNoteList(generics.ListAPIView):
+    serializer_class = NoteSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return Note.objects.filter(
+            author_id=self.kwargs["user_id"]
+        )
+
+
+# Admin: Delete any user's note
+class AdminNoteDelete(generics.DestroyAPIView):
+    queryset = Note.objects.all()
+    serializer_class = NoteSerializer
+    permission_classes = [IsAdminUser]
