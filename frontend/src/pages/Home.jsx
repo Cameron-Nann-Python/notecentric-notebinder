@@ -137,10 +137,11 @@ function Home() {
   };
 
   const shareNote = (noteId) => {
+    const id = Number(noteId)
     api
-      .patch(`/api/notes/share/${noteId}/`, {})
+      .patch(`/api/notes/share/${id}/`, {})
       .then(() => {getNotes();})
-      .catch((err) => console.log(err));
+      .catch((err) => alert(err));
   };
 
   const updateNote = (id, updatedTitle, updatedContent) => {
