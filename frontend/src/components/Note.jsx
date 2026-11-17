@@ -77,7 +77,7 @@ import "../styles/Note.css";
           </button>
 
           {onUpdate && (
-            <button type="button" onClick={startEditing}>
+            <button type="button" className="edit-button" onClick={startEditing}>
               Edit
             </button>
           )}
