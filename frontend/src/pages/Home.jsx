@@ -141,7 +141,8 @@ function Home() {
       .patch(`/api/notes/share/${noteId}/`, {})
       .then(() => {getNotes();})
       .catch((err) => console.log(err));
-  }
+  };
+
   const updateNote = (id, updatedTitle, updatedContent) => {
     return api
       .put(`/api/notes/update/${id}/`, { title: updatedTitle, content: updatedContent })
