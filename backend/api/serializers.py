@@ -47,3 +47,9 @@ class ModuleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Module
         fields = ["id", "name", "class_folder"]
+
+# validates title / content updates for existing notes
+class NoteUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        fields = ["title", "content"]

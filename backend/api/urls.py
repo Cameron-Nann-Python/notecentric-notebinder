@@ -7,6 +7,7 @@ urlpatterns = [
     path("notes/delete/<int:pk>/", views.NoteDelete.as_view(), name="delete-note"),
     path("classes/", views.ClassListCreate.as_view(), name='class-list'),
     path("modules/", views.ModuleListCreate.as_view(), name="module-list"),
+    path("notes/update/<int:pk>/", views.NoteUpdate.as_view(), name="update-note"),
 
     # Admin Users
     path("admin/users/", views.AdminUserList.as_view(), name="admin-users"),

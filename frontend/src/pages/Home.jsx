@@ -136,6 +136,16 @@ function Home() {
       .catch((err) => alert(err));
   };
 
+  const updateNote = (id, updatedTitle, updatedContent) => {
+    return api
+      .put(`/api/notes/update/${id}/`, { title: updatedTitle, content: updatedContent })
+      .then((res) => {
+        alert("Note updated!");
+        getNotes();
+        return res.data;
+      });
+  };
+
   return (
     <div>
       <header className="banner" >
@@ -257,6 +267,7 @@ function Home() {
                             key={note.id}
                             note={note}
                             onDelete={deleteNote}
+                            onUpdate={updateNote}
                           />
                         ))
                     }
