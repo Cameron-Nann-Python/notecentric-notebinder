@@ -59,13 +59,13 @@ function ForumClass() {
 
           <div className="class-search-list">
             {filteredModules.map((ModuleFolder) => (
-            <div
+            <button
               key={ModuleFolder.id}
               className="class-search-item"
               onClick={() => navigate(`/forum/class/${classId}/module/${ModuleFolder.id}`)}
             >
               <h3>{ModuleFolder.name}</h3>
-            </div>
+            </button>
             ))}
           </div>
         </aside>
@@ -73,13 +73,13 @@ function ForumClass() {
         <main className="forum-content">
           <div className="public-class-grid">
             {modules.map((module) => (
-              <div
+              <button
                 key={module.id}
                 className="class-card"
                 onClick={() => navigate(`/forum/class/${classId}/module/${module.id}`)}
               >
                 <h3>{module.name}</h3>
-              </div>
+              </button>
             ))}
           </div>
         </main>

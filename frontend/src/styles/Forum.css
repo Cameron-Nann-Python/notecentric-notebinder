@@ -17,7 +17,7 @@
 .class-search-item {
     cursor: pointer;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    width:100%
 }
 
 .class-search-item:hover {

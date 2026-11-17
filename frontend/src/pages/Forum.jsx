@@ -56,13 +56,15 @@ function Forum() {
 
           <div className="class-search-list">
             {filteredClasses.map((classFolder) => (
-              <div
+
+              <button
                 key={classFolder.id}
                 className="class-search-item"
                 onClick={() => navigate(`/forum/class/${classFolder.id}`)}
               >
                 <h3>{classFolder.name}</h3>
-              </div>
+              </button>
+
             ))}
           </div>
         </aside>
@@ -70,13 +72,13 @@ function Forum() {
         <main className="forum-content">
           <div className="public-class-grid">
             {classes.map((classFolder) => (
-              <div
+              <button
                 key={classFolder.id}
                 className="class-card"
                 onClick={() => navigate(`/forum/class/${classFolder.id}`)}
               >
                 <h3>{classFolder.name}</h3>
-              </div>
+              </button>
             ))}
           </div>
         </main>
