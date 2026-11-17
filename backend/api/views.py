@@ -34,7 +34,9 @@ class NoteShare(generics.UpdateAPIView):
         return Note.objects.filter(author=user)
 
     def perform_update(self, serializer):
-        serializer.save(is_public=True)
+        note = self.get_object()
+        # flip between sharing and unsharing note on save
+        serializer.save(is_public=not note.is_public)
 
 
 class NoteDelete(generics.DestroyAPIView):
@@ -74,6 +76,7 @@ class PublicModuleList(generics.ListAPIView):
         return Module.objects.filter(
             class_folder_id=self.kwargs["class_id"]
         )
+
 
 class PublicNoteList(generics.ListAPIView):
     serializer_class = NoteSerializer

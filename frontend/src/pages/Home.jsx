@@ -139,7 +139,7 @@ function Home() {
   const shareNote = (noteId) => {
     api
       .patch(`/api/notes/share/${noteId}/`, {})
-      .then(() => alert("Note shared!"))
+      .then(() => {getNotes();})
       .catch((err) => console.log(err));
   }
 

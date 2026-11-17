@@ -10,7 +10,7 @@ function Note({note, onDelete, onShare}) {
             <p className="note-content">{note.content}</p>
             <p className="note-date">{formattedDate}</p>
             <button className="share-button" onClick={() => onShare(note.id)}>
-                Share
+                {note.is_public ? "Unshare" : "Share"}
             </button>
             <button className="delete-button" onClick={() => onDelete(note.id)}>
                 Delete

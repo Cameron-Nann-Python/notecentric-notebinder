@@ -70,7 +70,7 @@ function ForumClass() {
           </div>
         </aside>
 
-        <main>
+        <main className="forum-content">
           <div className="public-class-grid">
             {modules.map((module) => (
               <div

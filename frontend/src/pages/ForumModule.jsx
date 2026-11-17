@@ -33,7 +33,7 @@ function ForumModule() {
           <button type="button" className="home-button" onClick={() => navigate("/")}>
               Home
           </button>
-          <button type="button" className="forum-button" onClick={() => navigate(`/forum/class/${classId}/module/${moduleId}`)}>
+          <button type="button" className="forum-button" onClick={() => navigate(`/forum/class/${classId}`)}>
               Modules
           </button>
           <button type="button" className="logout-button"onClick={() => navigate("/logout")}>
@@ -72,7 +72,7 @@ function ForumModule() {
               className="class-card"
             >
               <h3>{note.title}</h3>
-              <p>Author: {note.author}</p>
+              <p>Author: {note.author_name}</p>
               <p>Created: {new Date(note.created_at).toLocaleDateString()}</p>
               <p>{note.content}</p>
             </div>
