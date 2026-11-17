@@ -63,7 +63,7 @@ def test_usr_02(client, registered_user):
 @pytest.mark.django_db
 def test_usr_05(client, registered_user):
     """
-    Tests if user can update their note's title and content.
+    Tests if user can update their note's title and content but another user cannot.
     """
     client.force_authenticate(registered_user)
 
@@ -90,6 +90,22 @@ def test_usr_05(client, registered_user):
 
     # Ensure successful update and note's title/content changed
     assert response.status_code == 200
+    note.refresh_from_db()
+    assert note.title == "Updated Title"
+    assert note.content == "Updated Content"
+
+    # other user cannot update the note
+    other_user = User.objects.create_user(username="other_user", password="other_password")
+    client.force_authenticate(other_user)
+    response = client.put(
+        reverse("update-note", args=[note.id]), {
+            "title": "Unauthorized title",
+            "content": "Unauthorized content"
+        },
+        format="json"
+    )
+    # Not found (note doesn't belong to other_user)
+    assert response.status_code == 404
     note.refresh_from_db()
     assert note.title == "Updated Title"
     assert note.content == "Updated Content"
