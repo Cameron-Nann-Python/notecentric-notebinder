@@ -4,9 +4,14 @@ from . import views
 urlpatterns = [
     # Normal Users
     path("notes/", views.NoteListCreate.as_view(), name="note-list"),
+    path("notes/share/<int:pk>/", views.NoteShare.as_view(), name="share-note"),
     path("notes/delete/<int:pk>/", views.NoteDelete.as_view(), name="delete-note"),
     path("classes/", views.ClassListCreate.as_view(), name='class-list'),
     path("modules/", views.ModuleListCreate.as_view(), name="module-list"),
+
+    # Public Forum
+    path("public/classes/", views.PublicClassList.as_view(), name="public-classes"),
+    path("public/classes/<int:class_id>/modules/", views.PublicModuleList.as_view(), name="public-modules"),
 
     # Admin Users
     path("admin/users/", views.AdminUserList.as_view(), name="admin-users"),

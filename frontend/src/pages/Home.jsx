@@ -142,6 +142,9 @@ function Home() {
         <h1>NoteBinder</h1>
         <div className="header-actions">
           <span className="page-title">Home</span>
+          <button type="button" className="forum-button" onClick={() => navigate("/forum")}>
+            Forum
+          </button>
           <button type="button" className="logout-button"onClick={() => navigate("/logout")}>
             Logout
           </button>

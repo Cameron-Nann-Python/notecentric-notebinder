@@ -22,6 +22,21 @@ class NoteListCreate(generics.ListCreateAPIView):
             print(serializer.errors)
 
 
+class NoteShare(generics.UpdateAPIView):
+    """
+    Returns a note and allows it to be shared publicly.
+    """
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Note.objects.filter(author=user)
+
+    def perform_update(self, serializer):
+        serializer.save(is_public=True)
+
+
 class NoteDelete(generics.DestroyAPIView):
     serializer_class = Note
     permission_classes = [IsAuthenticated]
@@ -35,6 +50,31 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+
+class PublicClassList(generics.ListCreateAPIView):
+    """
+    Displays user classes in the public forum.
+    """
+    serializer_class = ClassSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Class.objects.all()
+
+
+class PublicModuleList(generics.ListAPIView):
+    """
+    Displays user modules for a given class in the public forum.
+    """
+    serializer_class = ModuleSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Module.objects.filter(
+            class_folder_id=self.kwargs["class_id"]
+        )
+
 
 class ClassListCreate(generics.ListCreateAPIView):
     serializer_class = ClassSerializer
@@ -50,6 +90,7 @@ class ClassListCreate(generics.ListCreateAPIView):
         else:
             print(serializer.errors)
 
+
 class ModuleListCreate(generics.ListCreateAPIView):
     serializer_class = ModuleSerializer
     permission_classes = [IsAuthenticated]
@@ -59,10 +100,12 @@ class ModuleListCreate(generics.ListCreateAPIView):
         # class_folder__owner from docs.djangoproject: Making Queries, Lookups that span relationships
         return Module.objects.filter(class_folder__owner=user)
 
+
 class AdminUserList(generics.ListAPIView):
     queryset = User.objects.all().order_by("username")
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
+
 
 class AdminClassList(generics.ListAPIView):
     serializer_class = ClassSerializer
@@ -72,6 +115,7 @@ class AdminClassList(generics.ListAPIView):
         return Class.objects.filter(
             owner_id=self.kwargs["user_id"]
         )
+
 
 class AdminModuleList(generics.ListAPIView):
     serializer_class = ModuleSerializer
