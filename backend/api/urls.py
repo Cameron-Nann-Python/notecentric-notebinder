@@ -8,6 +8,7 @@ urlpatterns = [
     path("notes/delete/<int:pk>/", views.NoteDelete.as_view(), name="delete-note"),
     path("classes/", views.ClassListCreate.as_view(), name='class-list'),
     path("modules/", views.ModuleListCreate.as_view(), name="module-list"),
+    path("notes/update/<int:pk>/", views.NoteUpdate.as_view(), name="update-note"),
 
     # Public Forum
     path("public/classes/", views.PublicClassList.as_view(), name="public-classes"),

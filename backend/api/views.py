@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 
-from .serializers import UserSerializer, NoteSerializer, ClassSerializer, ModuleSerializer
+from .serializers import UserSerializer, NoteSerializer, ClassSerializer, ModuleSerializer, NoteUpdateSerializer
 from .models import Note, Class, Module
 
 # Create your views here.
@@ -47,6 +47,13 @@ class NoteDelete(generics.DestroyAPIView):
         user = self.request.user
         return Note.objects.filter(author=user)
 
+class NoteUpdate(generics.UpdateAPIView):
+    serializer_class = NoteUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Note.objects.filter(author=user)
 
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()

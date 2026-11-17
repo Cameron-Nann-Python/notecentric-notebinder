@@ -3,6 +3,7 @@ from django.urls import reverse
 import pytest
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
+from .models import Note, Class, Module
 
 # Use this fixture to test client connection
 @pytest.fixture
@@ -59,6 +60,55 @@ def test_usr_02(client, registered_user):
     assert response.status_code == 200
     assert "access" in response.data
 
+@pytest.mark.django_db
+def test_usr_05(client, registered_user):
+    """
+    Tests if user can update their note's title and content but another user cannot.
+    """
+    client.force_authenticate(registered_user)
+
+    # create class, module, and note for the user
+    class_folder = Class.objects.create(name="Test Class", owner=registered_user)
+    module = Module.objects.create(name="Test Module", class_folder=class_folder)
+    note = Note.objects.create(
+        title="Original Title",
+        content="Original Content",
+        author=registered_user,
+        module=module
+    )
+
+    # Update the note's title and content
+    update_data = {
+        "title": "Updated Title",
+        "content": "Updated Content"
+    }
+    response = client.put(
+        reverse("update-note", args=[note.id]),
+        update_data,
+        format="json"
+    )
+
+    # Ensure successful update and note's title/content changed
+    assert response.status_code == 200
+    note.refresh_from_db()
+    assert note.title == "Updated Title"
+    assert note.content == "Updated Content"
+
+    # other user cannot update the note
+    other_user = User.objects.create_user(username="other_user", password="other_password")
+    client.force_authenticate(other_user)
+    response = client.put(
+        reverse("update-note", args=[note.id]), {
+            "title": "Unauthorized title",
+            "content": "Unauthorized content"
+        },
+        format="json"
+    )
+    # Not found (note doesn't belong to other_user)
+    assert response.status_code == 404
+    note.refresh_from_db()
+    assert note.title == "Updated Title"
+    assert note.content == "Updated Content"
 
 @pytest.mark.django_db
 def test_usr_14(client, registered_admin):
@@ -93,3 +143,4 @@ def test_usr_16(client, registered_admin, registered_user):
     # Ensure successful POST request and User removed
     assert response.status_code == 200
     assert not User.objects.filter(pk=registered_user.pk).exists()
+

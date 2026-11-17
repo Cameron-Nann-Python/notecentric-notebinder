@@ -142,6 +142,15 @@ function Home() {
       .then(() => {getNotes();})
       .catch((err) => console.log(err));
   }
+  const updateNote = (id, updatedTitle, updatedContent) => {
+    return api
+      .put(`/api/notes/update/${id}/`, { title: updatedTitle, content: updatedContent })
+      .then((res) => {
+        alert("Note updated!");
+        getNotes();
+        return res.data;
+      });
+  };
 
   return (
     <div>
@@ -268,6 +277,7 @@ function Home() {
                             note={note}
                             onDelete={deleteNote}
                             onShare={shareNote}
+                            onUpdate={updateNote}
                           />
                         ))
                     }
