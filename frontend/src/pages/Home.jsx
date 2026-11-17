@@ -136,6 +136,13 @@ function Home() {
       .catch((err) => alert(err));
   };
 
+  const shareNote = (noteId) => {
+    api
+      .patch(`/api/notes/share/${noteId}/`, {})
+      .then(() => alert("Note shared!"))
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div>
       <header className="banner" >
@@ -260,6 +267,7 @@ function Home() {
                             key={note.id}
                             note={note}
                             onDelete={deleteNote}
+                            onShare={shareNote}
                           />
                         ))
                     }

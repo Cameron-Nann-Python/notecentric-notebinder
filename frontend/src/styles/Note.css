@@ -52,6 +52,20 @@
     background-color: #d32f2f;
 }
 
+.share-button {
+    background-color: lightskyblue;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.share-button:hover {
+    background-color: lightblue;
+}
+
 .notes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));

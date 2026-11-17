@@ -12,6 +12,7 @@ urlpatterns = [
     # Public Forum
     path("public/classes/", views.PublicClassList.as_view(), name="public-classes"),
     path("public/classes/<int:class_id>/modules/", views.PublicModuleList.as_view(), name="public-modules"),
+    path("public/modules/<int:module_id>/notes/", views.PublicNoteList.as_view(), name="public-notes"),
 
     # Admin Users
     path("admin/users/", views.AdminUserList.as_view(), name="admin-users"),

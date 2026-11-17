@@ -44,7 +44,6 @@ function Forum() {
           </div>
       </header>
 
-
       <div className="forum">
         <aside className="forum-left-panel">
           <h3>Classes</h3>
@@ -67,6 +66,7 @@ function Forum() {
             ))}
           </div>
         </aside>
+
         <main className="forum-content">
           <div className="public-class-grid">
             {classes.map((classFolder) => (

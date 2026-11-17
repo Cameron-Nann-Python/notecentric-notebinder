@@ -75,6 +75,16 @@ class PublicModuleList(generics.ListAPIView):
             class_folder_id=self.kwargs["class_id"]
         )
 
+class PublicNoteList(generics.ListAPIView):
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Note.objects.filter(
+            module_id=self.kwargs["module_id"],
+            is_public=True
+        )
+
 
 class ClassListCreate(generics.ListCreateAPIView):
     serializer_class = ClassSerializer
