@@ -19,6 +19,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return data
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -31,9 +32,19 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class NoteSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(
+        source="author.username",
+        read_only=True
+    )
+
+    module_name = serializers.CharField(
+        source="module.name",
+        read_only=True
+    )
+
     class Meta:
         model = Note
-        fields = ["id", "title", "content", "created_at", "author", "module"]
+        fields = ["id", "title", "content", "created_at", "author", "author_name", "module", "module_name", "is_public"]
         extra_kwargs = {"author": {"read_only": True}}
 
 

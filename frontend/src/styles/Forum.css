@@ -1,0 +1,48 @@
+.forum {
+    display: flex;
+}
+
+.forum-left-panel {
+    width: 250px;
+    border-right: 1px solid #ccc;
+    padding: 1rem;
+}
+
+.forum-left-panel input {
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.class-search-item {
+    cursor: pointer;
+    padding: 0.5rem;
+    width:100%
+}
+
+.class-search-item:hover {
+    background-color: #f0f0f0;
+}
+
+.forum-content {
+    flex: 1;
+    padding: 1rem;
+}
+
+.public-class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.class-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.class-card:hover {
+    background-color: #f0f0f0;
+}

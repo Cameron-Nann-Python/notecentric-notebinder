@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import "../styles/Note.css";
 
-function Note({ note, onDelete, onUpdate }) {
+ function Note({ note, onDelete, onUpdate, onShare }) {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedTitle, setUpdatedTitle] = useState(note.title);
   const [updatedContent, setUpdatedContent] = useState(note.content);
@@ -18,6 +18,7 @@ function Note({ note, onDelete, onUpdate }) {
     setError(null);
     setIsEditing(true);
   };
+
   const saveNote = async (e) => {
     e.preventDefault(); // stop form's submission from refreshing the page
     setIsSaving(true);
@@ -31,6 +32,7 @@ function Note({ note, onDelete, onUpdate }) {
       setIsSaving(false);
     }
   };
+
   const cancelEditing = () => {
     setUpdatedTitle(note.title);
     setUpdatedContent(note.content);
@@ -70,8 +72,12 @@ function Note({ note, onDelete, onUpdate }) {
           <p className="note-content">{note.content}</p>
           <p className="note-date">Created on: {formattedDate}</p>
 
+          <button className="share-button" onClick={() => onShare(note.id)}>
+            {note.is_public ? "Unshare" : "Share"}
+          </button>
+
           {onUpdate && (
-            <button type="button" onClick={startEditing}>
+            <button type="button" className="edit-button" onClick={startEditing}>
               Edit
             </button>
           )}
@@ -88,4 +94,6 @@ function Note({ note, onDelete, onUpdate }) {
     </div>
   );
 }
+
+
 export default Note;

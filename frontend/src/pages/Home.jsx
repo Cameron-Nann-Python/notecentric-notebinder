@@ -136,6 +136,14 @@ function Home() {
       .catch((err) => alert(err));
   };
 
+  const shareNote = (noteId) => {
+    const id = Number(noteId)
+    api
+      .patch(`/api/notes/share/${id}/`, {})
+      .then(() => {getNotes();})
+      .catch((err) => alert(err));
+  };
+
   const updateNote = (id, updatedTitle, updatedContent) => {
     return api
       .put(`/api/notes/update/${id}/`, { title: updatedTitle, content: updatedContent })
@@ -152,6 +160,9 @@ function Home() {
         <h1>NoteBinder</h1>
         <div className="header-actions">
           <span className="page-title">Home</span>
+          <button type="button" className="forum-button" onClick={() => navigate("/forum")}>
+            Forum
+          </button>
           <button type="button" className="logout-button"onClick={() => navigate("/logout")}>
             Logout
           </button>
@@ -267,6 +278,7 @@ function Home() {
                             key={note.id}
                             note={note}
                             onDelete={deleteNote}
+                            onShare={shareNote}
                             onUpdate={updateNote}
                           />
                         ))

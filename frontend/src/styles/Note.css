@@ -38,6 +38,20 @@
     margin-top: 15px;
 }
 
+.edit-button {
+    background-color: #ccc;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: darkgray;
+}
+
 .delete-button {
     background-color: #f44336;
     color: white;
@@ -50,6 +64,20 @@
 
 .delete-button:hover {
     background-color: #d32f2f;
+}
+
+.share-button {
+    background-color: lightskyblue;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.share-button:hover {
+    background-color: lightblue;
 }
 
 .notes-grid {

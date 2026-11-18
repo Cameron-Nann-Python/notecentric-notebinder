@@ -40,3 +40,27 @@
 .logout-button:hover {
     background-color: #f5f5f5;
 }
+
+.home-button {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.home-button:hover {
+    background-color: #f5f5f5;
+}
+
+.forum-button {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+.forum-button:hover {
+    background-color: #f5f5f5;
+}
